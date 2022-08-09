@@ -14,9 +14,6 @@
             ],
             "@base/*": [
                 "src/*"
-            ],
-            "@api/*": [
-                "src/api/*"
             ]
         },
         "emitDecoratorMetadata": true,
