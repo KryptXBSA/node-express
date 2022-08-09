@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import { findOne, insertOne } from '../../mongo/mongo'
 import { JWT_SECRET, MAIN_COLLECTION } from '../../config';
+import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 const app = express();
 
 const User = z.object({
@@ -15,28 +16,22 @@ type User = z.infer<typeof User>;
 
 export const signupRoute = app.post('/signup', async (req, res) => {
     let user: User
-
     try {
         user = User.parse(req.body);
     } catch (e) {
         console.log('userParseErrror', e);
-        res.send(e.issues[0].message)
-        return
+        return sendFailedResponse(res, 400, { message: e.issues[0].message })
     }
     user.password = await bcrypt.hash(user.password, 11);
-
-    // const match = await bcrypt.compare(user.password, hashedPassword);
     let findResult: any = await findOne(MAIN_COLLECTION, { username: user.username })
     let insertResult
     if (findResult) {
-        res.send('already registered')
-        return
+        return sendFailedResponse(res, 400, { message: 'already registered' })
     }
     if (!findResult) insertResult = await insertOne(MAIN_COLLECTION, user);
 
     if (findResult) {
         const token = jwt.sign(user, JWT_SECRET);
-        res.send({ token })
-        return
+        return sendSuccessRespose(res, 200, { token })
     }
 })

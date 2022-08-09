@@ -2,10 +2,9 @@ import express from 'express';
 import { z } from "zod";
 import bcrypt from 'bcrypt'
 var jwt = require('jsonwebtoken');
-
 import { findOne, insertOne } from '../../mongo/mongo'
 import { JWT_SECRET, MAIN_COLLECTION } from '../../config';
-
+import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 const app = express();
 
 const User = z.object({
@@ -20,22 +19,19 @@ export const loginRoute = app.post('/login', async (req, res) => {
         user = User.parse(req.body);
     } catch (e) {
         console.log('userParseErrror', e);
-        res.send(e.issues[0].message)
-        return
+        return sendFailedResponse(res, 400, { message: e.issues[0].message })
     }
 
     let findResult: User = await findOne(MAIN_COLLECTION, { username: user.username })
     if (!findResult) {
-        res.send('user not found')
-        return
+        return sendFailedResponse(res, 400, { message: 'user not found' })
     }
     if (findResult) {
         const correctPassword = await bcrypt.compare(user.password, findResult.password);
         console.log(findResult);
         if (correctPassword) {
             const token = jwt.sign(findResult, JWT_SECRET);
-            res.send({ token })
-            return
+            return sendSuccessRespose(res, 200, { token })
         }
     }
 
