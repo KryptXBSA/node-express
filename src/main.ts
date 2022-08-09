@@ -1,10 +1,10 @@
 import express from 'express';
-import { getImages } from './test';
+import { router } from './../routes/index';
+import 'dotenv/config'
 const app = express()
 const port = process.env.PORT || 7002
+app.use(router)
 app.get('/', async (req, res) => {
-  console.log(await getImages);
-
   res.send('Hello World!')
 })
 

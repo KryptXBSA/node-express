@@ -1,9 +1,9 @@
 import * as mongoDB from "mongodb";
 
-const url = 'mongodb+srv://test:test@cluster0.wkig6v5.mongodb.net/?retryWrites=true&w=majority';
+const url:string = process.env.MONGO_CONNECTION_STRING!;
 const client = new mongoDB.MongoClient(url);
 let db0: mongoDB.Db
-const dbName = 'test';
+const dbName = process.env.DB_NAME!;
 
 export async function updateData(collectionName: string, id: string, obj: any, db?: mongoDB.Db) {
   let mainDB = db ? db : db0
