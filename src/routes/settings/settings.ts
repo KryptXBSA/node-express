@@ -5,18 +5,17 @@ import jwt from 'jsonwebtoken';
 import { findOne, insertOne, updateOne } from '../../mongo/mongo'
 import { JWT_SECRET, USER_COLLECTION } from '../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
-import { SettingsUser as User } from '../../types/user';
-import { verifyJwt } from '../../utils/verify-jwt';
+import { SettingsUser,User } from '../../types/user';
+import { verifyUser } from '../../utils/verify-jwt';
 
 const app = express();
 
-
-export const settings = app.post('/settings', async (req, res) => {
-    let { error, token }: { error: boolean, token: User } = await verifyJwt(req)
+export const settingsRoute = app.post('/settings', async (req, res) => {
+    let { error, token }: { error: boolean, token?: User } = await verifyUser(req)
     if (error) return sendFailedResponse(res, 400, 'Invalid Token')
-    let user: User
+    let user: SettingsUser
     try {
-        user = User.parse(req.body);
+        user = SettingsUser.parse(req.body);
     } catch (e) {
         console.log('userParseErrror', e);
         return sendFailedResponse(res, 400, { message: e.issues[0].message })

@@ -1,28 +1,22 @@
 import express from 'express';
-import { z } from "zod";
 import bcrypt from 'bcrypt'
-var jwt = require('jsonwebtoken');
-import { findOne, insertOne } from '../../mongo/mongo'
-import { JWT_SECRET, MAIN_COLLECTION } from '../../config';
-import { sendSuccessRespose, sendFailedResponse } from '../../src/utils/response'
+import jwt from 'jsonwebtoken';
+import { findOne, insertOne } from '../../../mongo/mongo'
+import { JWT_SECRET, USER_COLLECTION } from '../../../../config';
+import { sendSuccessRespose, sendFailedResponse } from '../../../utils/response'
+import { AuthUser, User } from '../../../types/user';
 const app = express();
 
-const User = z.object({
-    username: z.string().max(9),
-    password: z.string().max(9),
-});
-type User = z.infer<typeof User>;
-
 export const loginRoute = app.post('/login', async (req, res) => {
-    let user: User
+    let user: AuthUser
     try {
-        user = User.parse(req.body);
+        user = AuthUser.parse(req.body);
     } catch (e) {
         console.log('userParseErrror', e);
         return sendFailedResponse(res, 400, { message: e.issues[0].message })
     }
 
-    let findResult: User = await findOne(MAIN_COLLECTION, { username: user.username })
+    let findResult:  User= await findOne(USER_COLLECTION, { username: user.username })
     if (!findResult) {
         return sendFailedResponse(res, 400, { message: 'user not found' })
     }
