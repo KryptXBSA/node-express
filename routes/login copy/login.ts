@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 var jwt = require('jsonwebtoken');
 import { findOne, insertOne } from '../../mongo/mongo'
 import { JWT_SECRET, MAIN_COLLECTION } from '../../config';
-import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
+import { sendSuccessRespose, sendFailedResponse } from '../../src/utils/response'
 const app = express();
 
 const User = z.object({

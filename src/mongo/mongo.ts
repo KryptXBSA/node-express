@@ -1,4 +1,4 @@
-import { DB_NAME, MONGO_CONNECTION_STRING } from './../config';
+import { DB_NAME, MONGO_CONNECTION_STRING } from '../../config';
 import * as mongoDB from "mongodb";
 
 const url: string = MONGO_CONNECTION_STRING
@@ -13,17 +13,17 @@ export async function insertOne(collectionName: string, obj: any, db?: mongoDB.D
   db0 && client.close()
   return insertResult;
 }
-export async function updateData(collectionName: string, id: string, obj: any, db?: mongoDB.Db) {
+export async function updateOne(collectionName: string, find: any, update: any, db?: mongoDB.Db) {
   let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
-  const updateResult = await collection.updateOne({ id: id }, { $set: { data: obj } });
+  const updateResult = await collection.updateOne(find, update);
   db0 && client.close()
   return updateResult;
 }
-export async function findOne(collectionName: string, obj:any, db?: mongoDB.Db) {
+export async function findOne(collectionName: string, obj: any, db?: mongoDB.Db) {
   let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
-  const findResult:any = await collection.findOne(obj);
+  const findResult: any = await collection.findOne(obj);
   db0 && client.close()
   return findResult;
 }
