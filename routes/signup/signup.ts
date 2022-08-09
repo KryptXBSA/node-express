@@ -1,8 +1,9 @@
+import { DB_NAME } from './../../config';
 import express from 'express';
 const app = express();
 import { z } from "zod";
 import bcrypt from 'bcrypt'
-
+import { insertOne } from '../../mongo/mongo'
 const User = z.object({
     username: z.string().max(9),
     password: z.string().max(9),
@@ -23,6 +24,8 @@ export const signupRoute = app.post('/signup', async (req, res) => {
 
     const match = await bcrypt.compare(user.password, hashedPassword);
     console.log(match);
-
+    console.log(DB_NAME);
+    let result = await insertOne('test', user)
+    
     res.send(user)
 })

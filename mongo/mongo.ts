@@ -1,29 +1,34 @@
+import { MONGO_CONNECTION_STRING } from './../config';
 import * as mongoDB from "mongodb";
 
-const url:string = process.env.MONGO_CONNECTION_STRING!;
+const url: string = MONGO_CONNECTION_STRING
 const client = new mongoDB.MongoClient(url);
 let db0: mongoDB.Db
 const dbName = process.env.DB_NAME!;
 
+export async function insertOne(collectionName: string, obj: any, db?: mongoDB.Db) {
+  let mainDB = db ? db : await connect()
+  const collection = mainDB.collection(collectionName);
+  const insertResult = await collection.insertOne(obj);
+  db0 && client.close()
+  return insertResult;
+}
 export async function updateData(collectionName: string, id: string, obj: any, db?: mongoDB.Db) {
-  let mainDB = db ? db : db0
-  await connect()
+  let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
   const updateResult = await collection.updateOne({ id: id }, { $set: { data: obj } });
   db0 && client.close()
   return updateResult;
 }
 export async function findOne(collectionName: string, obj: mongoDB.Callback<mongoDB.WithId<mongoDB.Document> | null>, db?: mongoDB.Db) {
-  let mainDB = db ? db : db0
-  await connect()
+  let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
   const findResult = await collection.findOne(obj);
   db0 && client.close()
   return findResult;
 }
 export async function findMany(collectionName: string, obj: mongoDB.Filter<mongoDB.Document>, db?: mongoDB.Db) {
-  let mainDB = db ? db : db0
-  await connect()
+  let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
   const findResult = await collection.find(obj).toArray();
   db0 && client.close()
