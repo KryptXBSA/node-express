@@ -1,10 +1,11 @@
 import express from 'express';
 import { z } from "zod";
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken';
+var jwt = require('jsonwebtoken');
 
 import { findOne, insertOne } from '../../mongo/mongo'
 import { JWT_SECRET, MAIN_COLLECTION } from '../../config';
+
 const app = express();
 
 const User = z.object({
@@ -13,9 +14,8 @@ const User = z.object({
 });
 type User = z.infer<typeof User>;
 
-export const signupRoute = app.post('/signup', async (req, res) => {
+export const loginRoute = app.post('/login', async (req, res) => {
     let user: User
-
     try {
         user = User.parse(req.body);
     } catch (e) {
@@ -23,20 +23,20 @@ export const signupRoute = app.post('/signup', async (req, res) => {
         res.send(e.issues[0].message)
         return
     }
-    user.password = await bcrypt.hash(user.password, 11);
 
-    // const match = await bcrypt.compare(user.password, hashedPassword);
-    let findResult: any = await findOne(MAIN_COLLECTION, { username: user.username })
-    let insertResult
-    if (findResult) {
-        res.send('already registered')
+    let findResult: User = await findOne(MAIN_COLLECTION, { username: user.username })
+    if (!findResult) {
+        res.send('user not found')
         return
     }
-    if (!findResult) insertResult = await insertOne(MAIN_COLLECTION, user);
-
     if (findResult) {
-        const token = jwt.sign(user, JWT_SECRET);
-        res.send({ token })
-        return
+        const correctPassword = await bcrypt.compare(user.password, findResult.password);
+        console.log(findResult);
+        if (correctPassword) {
+            const token = jwt.sign(findResult, JWT_SECRET);
+            res.send({ token })
+            return
+        }
     }
+
 })

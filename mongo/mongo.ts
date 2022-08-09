@@ -1,10 +1,10 @@
-import { MONGO_CONNECTION_STRING } from './../config';
+import { DB_NAME, MONGO_CONNECTION_STRING } from './../config';
 import * as mongoDB from "mongodb";
 
 const url: string = MONGO_CONNECTION_STRING
 const client = new mongoDB.MongoClient(url);
 let db0: mongoDB.Db
-const dbName = process.env.DB_NAME!;
+const dbName = DB_NAME;
 
 export async function insertOne(collectionName: string, obj: any, db?: mongoDB.Db) {
   let mainDB = db ? db : await connect()
@@ -20,10 +20,10 @@ export async function updateData(collectionName: string, id: string, obj: any, d
   db0 && client.close()
   return updateResult;
 }
-export async function findOne(collectionName: string, obj: mongoDB.Callback<mongoDB.WithId<mongoDB.Document> | null>, db?: mongoDB.Db) {
+export async function findOne(collectionName: string, obj:any, db?: mongoDB.Db) {
   let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);
-  const findResult = await collection.findOne(obj);
+  const findResult:any = await collection.findOne(obj);
   db0 && client.close()
   return findResult;
 }
