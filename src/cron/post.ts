@@ -1,13 +1,15 @@
+import { POINTS_PER_LIKE, POINTS_PER_COMMENT, POINTS_PER_POST } from './../../config';
+import { Leaderboard } from './../types/leaderboard';
 import CronJob from 'cron';
 import { nanoid } from 'nanoid'
 import { generateUsername } from "unique-username-generator";
 
 import { connect, findMany, findOne, insertOne, updateOne } from '../mongo/mongo';
 import { User } from '../types/user';
-import { POST_COLLECTION, USER_COLLECTION } from '../../config';
+import { LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../config';
 import { Post } from '../types/post';
-let likeCount = 16
-let commentCount = 15
+let likeCount = 5
+let commentCount = 5
 let newUsers = 5
 let newPosts = 1
 let LT = 5
@@ -15,11 +17,14 @@ export async function registerUsers(db: any) {
     for (let i = 0; i < newUsers; i++) {
         let user: User = { user_id: nanoid(), username: generateUsername(), password: '$2b$11$qQrJ4kUfQq9bAR0s2n8pvuoN4jSHfun0dHQO2YBr7ogksPdNixW1a' }
         let insertResult = await insertOne(USER_COLLECTION, user, db);
-        console.log('new user', user.username);
+
+        let leaderboard: Leaderboard = { user_id: user.user_id, points: 0, captchaSolved: 0, posts: 0, comments: 0, likes: 0, commentsReceived: 0, likesReceived: 0 }
+        insertResult = await insertOne(LEADERBOARD_COLLECTION, leaderboard, db);
+
 
         await newPost(db, user)
-        likePost(db, user)
-        commentPost(db, user)
+        await likePost(db, user)
+        await commentPost(db, user)
     }
 }
 async function commentPost(db: any, user: User) {
@@ -36,18 +41,22 @@ async function commentPost(db: any, user: User) {
 
     if (posts.length > commentCount) {
         for (let i = 0; i < commentCount; i++) {
-            let post_id = posts[i].post_id
+            let post = posts[i]
 
 
-            let updateResult = await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user!.user_id, content: nanoid(), comment_date: Date.now() } } }, db)
+            let updateResult = await updateOne(POST_COLLECTION, { post_id: post.post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user!.user_id, content: nanoid(), comment_date: Date.now() } } }, db)
+            await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { comments: 1, points: POINTS_PER_COMMENT } }, db)
+            await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { commentsReceived: 1, points: POINTS_PER_COMMENT } }, db)
         }
     }
-    // let insertResult = await insertOne(USER_COLLECTION, user);
 }
 async function newPost(db: any, user: User) {
     for (let i = 0; i < newPosts; i++) {
+
         let post: Post = { post_id: nanoid(), user_id: user!.user_id, content: 'hii', imageUrl: 'filename', likes: [], comments: [], post_date: Date.now() }
+        console.log('wtffff', post.user_id);
         let insertResult = await insertOne(POST_COLLECTION, post, db);
+        await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } }, db)
     }
 
 }
@@ -64,9 +73,13 @@ async function likePost(db: any, user: User) {
     }, db)
     if (posts.length > likeCount) {
         for (let i = 0; i < likeCount; i++) {
-            let post_id = posts[i].post_id
+            let post = posts[i]
 
-            let updateResult = await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: { likes: { like_id: nanoid(), user_id: user!.user_id, like_date: Date.now() } } }, db)
+            let dateResult = await updateOne(POST_COLLECTION, { post_id: post.post_id }, { $push: { likes: { like_id: nanoid(), user_id: user!.user_id, like_date: Date.now() } } }, db)
+            await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { likes: 1, points: POINTS_PER_LIKE } }, db)
+
+            let u2 = await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { likesReceived: 1, points: POINTS_PER_LIKE } }, db)
+
         }
     }
 }

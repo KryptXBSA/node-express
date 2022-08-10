@@ -1,10 +1,11 @@
+import { POINTS_PER_POST } from './../../../config';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid'
 import multer from 'multer'
 
 import { findOne, insertOne, updateOne } from '../../mongo/mongo'
-import { JWT_SECRET, POST_COLLECTION, USER_COLLECTION } from '../../../config';
+import { JWT_SECRET, LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 import { User } from '../../types/user';
 import { NewPost, Post } from './../../types/post';
@@ -66,6 +67,7 @@ export const newPostRoute = app.post('/new', upload.single('image'), async (req,
     let post: Post = { post_id: nanoid(), user_id: user!.user_id, content, imageUrl: filename, likes: [], comments: [], post_date: Date.now() }
     let insertResult
     insertResult = await insertOne(POST_COLLECTION, post);
+    await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } })
     const token = jwt.sign(user!, JWT_SECRET);
     return sendSuccessRespose(res, 200, { token, post: post })
 })

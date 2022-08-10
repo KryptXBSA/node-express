@@ -1,10 +1,11 @@
+import { POINTS_PER_LIKE } from './../../../config';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid'
 import { z } from "zod";
 
 import { findOne, insertOne, updateOne } from '../../mongo/mongo'
-import { JWT_SECRET, POST_COLLECTION, USER_COLLECTION } from '../../../config';
+import { JWT_SECRET, LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 import { User } from '../../types/user';
 import { NewPost, Post } from './../../types/post';
@@ -32,12 +33,15 @@ export const likePostRoute = app.post('/like', async (req, res) => {
 
 
     if (req.query.unlike) {
-        if (!post.likes.find(p => p.user_id === user!.user_id )) return sendFailedResponse(res, 400, { message: 'Not liked' })
+        if (!post.likes.find(p => p.user_id === user!.user_id)) return sendFailedResponse(res, 400, { message: 'Not liked' })
         await updateOne(POST_COLLECTION, { post_id: post_id }, { $pull: { likes: { user_id: user!.user_id } } })
+        await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { likes: -1, points: -POINTS_PER_LIKE } })
+        await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { likesReceived: -1, points: -POINTS_PER_LIKE } })
     } else {
         if (post.likes.find(p => p.user_id === user!.user_id)) return sendFailedResponse(res, 400, { message: 'Already liked' })
         await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: { likes: { like_id: nanoid(), user_id: user!.user_id, like_date: Date.now() } } })
+        await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { likes: 1, points: POINTS_PER_LIKE } })
+        await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { likesReceived: 1, points: POINTS_PER_LIKE } })
     }
-
     return sendSuccessRespose(res, 200, { message: "success" })
 })
