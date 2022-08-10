@@ -1,4 +1,4 @@
-import { POINTS_PER_COMMENT } from './../../../config';
+import { POINTS_PER_COMMENT } from '../../../config';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid'

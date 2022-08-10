@@ -1,4 +1,4 @@
-import { Leaderboard } from './../../../types/leaderboard';
+import { Leaderboard } from '../../../types/leaderboard';
 import express from 'express';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';

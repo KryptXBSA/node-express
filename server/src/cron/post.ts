@@ -1,5 +1,5 @@
-import { POINTS_PER_LIKE, POINTS_PER_COMMENT, POINTS_PER_POST } from './../../config';
-import { Leaderboard } from './../types/leaderboard';
+import { POINTS_PER_LIKE, POINTS_PER_COMMENT, POINTS_PER_POST } from '../../config';
+import { Leaderboard } from '../types/leaderboard';
 import CronJob from 'cron';
 import { nanoid } from 'nanoid'
 import { generateUsername } from "unique-username-generator";

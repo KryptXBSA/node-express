@@ -1,4 +1,4 @@
-import { User } from './../types/user';
+import { User } from '../types/user';
 import { findOne } from '../mongo/mongo';
 import express from 'express';
 import jwt from 'jsonwebtoken';

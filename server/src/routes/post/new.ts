@@ -1,4 +1,4 @@
-import { POINTS_PER_POST } from './../../../config';
+import { POINTS_PER_POST } from '../../../config';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid'
@@ -8,7 +8,7 @@ import { findOne, insertOne, updateOne } from '../../mongo/mongo'
 import { JWT_SECRET, LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 import { User } from '../../types/user';
-import { NewPost, Post } from './../../types/post';
+import { NewPost, Post } from '../../types/post';
 import { verifyUser } from '../../utils/verify-user';
 
 const app = express();
