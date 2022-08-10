@@ -2,6 +2,7 @@ import { findOne } from '../mongo/mongo';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
+
 import { JWT_SECRET, USER_COLLECTION } from '../../config';
 
 export async function verifyUser(req: express.Request) {
@@ -11,12 +12,7 @@ export async function verifyUser(req: express.Request) {
         delete findResult['_id']
         delete validToken['_id']
         delete validToken['iat']
-        console.log('11', findResult);
-        console.log('222', validToken);
-
-
         if (!findResult) return { error: true, message: 'User not found' }
-
         let validToken1 = verifyObjects(validToken, findResult)
         if (!validToken1) return { error: true, message: 'Invalid token' }
         return { error: false, token: validToken, user: findResult, }

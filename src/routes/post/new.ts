@@ -22,7 +22,7 @@ export const newPostRoute = app.post('/new', async (req, res) => {
         return sendFailedResponse(res, 400, { message: e.issues[0].message })
     }
 
-    let post: Post = { post_id:nanoid(),user_id: user.user_id, ...newPost, likes: [], comments: [] }
+    let post: Post = { post_id: nanoid(), user_id: user.user_id, ...newPost, likes: [], comments: [], post_date: Date.now() }
     let insertResult
     insertResult = await insertOne(POST_COLLECTION, post);
     const token = jwt.sign(user, JWT_SECRET);
