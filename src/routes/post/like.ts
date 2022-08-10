@@ -28,11 +28,16 @@ export const likePostRoute = app.post('/like', async (req, res) => {
     }
 
     let post: Post = await findOne(POST_COLLECTION, { post_id: post_id })
-    if (!post) return { error: true, message: 'Post not found' }
-    if (post.likes.find(p => p.user_id === user.user_id)) return sendFailedResponse(res, 400, { message: 'Already liked' })
+    if (!post) return sendFailedResponse(res, 400, { message: 'Post not found' })
 
 
-    let updateResult = await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: {likes:{like_id:nanoid(), user_id: user.user_id, like_date: Date.now() }} })
+    if (req.query.unlike) {
+        if (!post.likes.find(p => p.user_id === user.user_id )) return sendFailedResponse(res, 400, { message: 'Not liked' })
+        await updateOne(POST_COLLECTION, { post_id: post_id }, { $pull: { likes: { user_id: user.user_id } } })
+    } else {
+        if (post.likes.find(p => p.user_id === user.user_id)) return sendFailedResponse(res, 400, { message: 'Already liked' })
+        await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: { likes: { like_id: nanoid(), user_id: user.user_id, like_date: Date.now() } } })
+    }
 
     return sendSuccessRespose(res, 200, { message: "success" })
 })

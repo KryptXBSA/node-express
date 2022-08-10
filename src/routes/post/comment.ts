@@ -32,7 +32,7 @@ export const commentRoute = app.post('/comment', async (req, res) => {
     }
 
     let post: Post = await findOne(POST_COLLECTION, { post_id: comment.post_id })
-    if (!post) return { error: true, message: 'Post not found' }
+    if (!post) return sendFailedResponse(res, 400, { message: 'Post not found' })
     console.log(post);
 
 
