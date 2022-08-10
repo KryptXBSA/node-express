@@ -1,1 +1,1 @@
-export type Leaderboard = { user_id: string, points: number, captchaSolved: number, posts: number, likes: number, comments: number, commentsReceived: 0, likesReceived: 0 }
+export type Leaderboard = { user_id: string,username:string, points: number, captchaSolved: number, posts: number, likes: number, comments: number, commentsReceived: 0, likesReceived: 0 }

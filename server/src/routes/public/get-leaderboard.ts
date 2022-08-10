@@ -23,7 +23,7 @@ export const getLeaderBoardRoute = app.post('/get-leaderboard', async (req, res)
     if (user_id) {
         user = await findOne(LEADERBOARD_COLLECTION, { user_id: user_id })
     }
-    let findResult: Leaderboard[] = await findPagination(LEADERBOARD_COLLECTION, skip, 10, { points: -1 })
+    let findResult: Leaderboard[] = await findPagination(LEADERBOARD_COLLECTION, skip, 100, { points: -1 })
     if (!findResult) {
         return sendFailedResponse(res, 400, { message: 'no posts found' })
     }

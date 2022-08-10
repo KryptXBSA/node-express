@@ -2,10 +2,8 @@
 
 import Head from "next/head";
 import { ReactNode, useEffect, useState } from "react";
-import { SignupModal } from "../components/modal";
 import { Sidebar } from "../components/sidebar";
 import { UseProgramContext } from "../contexts/programContextProvider";
-import { createUsername } from "../program/users";
 import { useNotifier } from "react-headless-notifier";
 import { SpecialAlert } from "../components/alert";
 const Layout = ({
@@ -38,13 +36,9 @@ const Layout = ({
    <Sidebar active={active} />
    {/* </div> */}
    <div className={page === "block" ? "" : `relative justify-center flex flex-row `}>
-    <div className=" invisible">
-     <Trending />
-    </div>
+    
     {children}
-    <div className=" invisible">
-     <Trending />
-    </div>
+    
    </div>
   </>
  );
@@ -54,7 +48,7 @@ export default Layout;
 function Trending() {
  return (
   <>
-   <div className="pr-40 ml-12 bg-slate-900">
+   <div className="w-full  bg-slate-900">
     trending
     <div className="max-w-sm  fixed bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
      <a href="#">
