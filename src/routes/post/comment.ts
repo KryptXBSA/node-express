@@ -36,7 +36,7 @@ export const commentRoute = app.post('/comment', async (req, res) => {
     console.log(post);
 
 
-    let updateResult = await updateOne(POST_COLLECTION, { post_id: comment.post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user.user_id, content: comment.content, comment_date: Date.now() } } })
+    let updateResult = await updateOne(POST_COLLECTION, { post_id: comment.post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user!.user_id, content: comment.content, comment_date: Date.now() } } })
 
 
     return sendSuccessRespose(res, 200, { message: "success" })

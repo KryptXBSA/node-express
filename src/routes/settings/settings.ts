@@ -23,19 +23,19 @@ export const settingsRoute = app.post('/settings', async (req, res) => {
 
 
     if (user.newPassword) {
-        const correctPassword = await bcrypt.compare(user.currentPassword, newUser.password);
+        const correctPassword = await bcrypt.compare(user.currentPassword, newUser!.password!);
         if (!correctPassword) return sendFailedResponse(res, 400, { message: 'Incorrect Password' })
-        newUser.password = await bcrypt.hash(user.newPassword, 11);
+        newUser!.password = await bcrypt.hash(user.newPassword, 11);
     }
-    if (user.username) newUser.username = user.username
+    if (user.username) newUser!.username = user.username
 console.log('new',newUser);
 
-    let updateResult = await updateOne(USER_COLLECTION, { user_id: newUser.user_id }, { $set: newUser })
+    let updateResult = await updateOne(USER_COLLECTION, { user_id: newUser!.user_id }, { $set: newUser })
     console.log(updateResult);
 
     // let newUser: User = await findOne(USER_COLLECTION, { user_id: token.user_id })
     // console.log(newUser);
-    const newToken = jwt.sign(newUser, JWT_SECRET);
+    const newToken = jwt.sign(newUser!, JWT_SECRET);
     return sendSuccessRespose(res, 200, { token: newToken })
 
 })

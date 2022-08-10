@@ -21,7 +21,7 @@ export const loginRoute = app.post('/login', async (req, res) => {
         return sendFailedResponse(res, 400, { message: 'user not found' })
     }
     if (findResult) {
-        const correctPassword = await bcrypt.compare(user.password, findResult.password);
+        const correctPassword = await bcrypt.compare(user.password, findResult.password!);
         console.log('findResult00',findResult);
         console.log(correctPassword);
         if (!correctPassword) {

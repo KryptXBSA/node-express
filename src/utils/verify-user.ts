@@ -7,7 +7,7 @@ import { JWT_SECRET, USER_COLLECTION } from '../../config';
 
 export async function verifyUser(req: express.Request) {
     try {
-        let validToken: any = jwt.verify(req.headers.authorization, JWT_SECRET)
+        let validToken: any = jwt.verify(req.headers.authorization!, JWT_SECRET)
         let findResult = await findOne(USER_COLLECTION, { user_id: validToken.user_id })
         delete findResult['_id']
         delete validToken['_id']
