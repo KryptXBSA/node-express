@@ -26,12 +26,12 @@ export const signupRoute = app.post('/signup', async (req, res) => {
     if (findResult) {
         return sendFailedResponse(res, 400, { message: 'already registered' })
     }
-    let newUser: User = { ...user, user_id: nanoid() }
+    let newUser: User = { ...user, user_id: nanoid(), imageUrl: 'default' }
     let insertResult
     if (!findResult) {
         insertResult = await insertOne(USER_COLLECTION, newUser);
 
-        let leaderboard: Leaderboard = { user_id: newUser.user_id, points: 0, captchaSolved: 0, posts: 0, comments: 0, likes: 0 , commentsReceived: 0, likesReceived: 0}
+        let leaderboard: Leaderboard = { user_id: newUser.user_id, points: 0, captchaSolved: 0, posts: 0, comments: 0, likes: 0, commentsReceived: 0, likesReceived: 0 }
         insertResult = await insertOne(LEADERBOARD_COLLECTION, leaderboard);
         const token = jwt.sign(newUser, JWT_SECRET);
         return sendSuccessRespose(res, 200, { token })

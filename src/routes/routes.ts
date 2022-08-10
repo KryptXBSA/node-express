@@ -1,3 +1,4 @@
+import { profileImageRoute } from './settings/profile-image';
 import { newPostRoute } from './post/new';
 import express from 'express';
 import { signupRoute } from './auth/signup/signup';
@@ -9,6 +10,7 @@ export const router = express()
 router.use(signupRoute)
 router.use(loginRoute)
 router.use(settingsRoute)
+router.use('/settings', profileImageRoute)
 router.use('/post', newPostRoute)
 router.use('/post', likePostRoute)
 router.use('/post', commentRoute)

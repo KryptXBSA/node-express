@@ -22,20 +22,20 @@ function getCorrentAnswers() {
 }
 
 
-(async () => {
-  let i = 0
-  for (let int = 0; int < 5; int++) {
+// (async () => {
+//   let i = 0
+//   for (let int = 0; int < 5; int++) {
 
-    let image = await generateAndSaveImage()
-    captcha.push({ imageUrl: image.imageURL, word: image.word })
-    words.push(image.word)
-  }
-  console.log(captcha);
-  let correctAnswers = getCorrentAnswers()
-  console.log(correctAnswers);
+//     let image = await generateAndSaveImage()
+//     captcha.push({ imageUrl: image.imageURL, word: image.word })
+//     words.push(image.word)
+//   }
+//   console.log(captcha);
+//   let correctAnswers = getCorrentAnswers()
+//   console.log(correctAnswers);
 
-}
-)()
+// }
+// )()
 
 function generateWord() {
   return generateSlug(1, { format: 'camel', categories: { adjective: ["color"] } });
@@ -43,8 +43,6 @@ function generateWord() {
 async function getImages(word: string) {
   try {
     const response = await axios.get(`https://pixabay.com/api/?key=29161262-ff5f47457344f802f65c945ad&q=${word}&image_type=photo&pretty=true`);
-    console.log(word);
-    console.log(response.data);
     return response.data
   } catch (error) {
     console.error(error);
@@ -65,7 +63,7 @@ const download_image = (url: any, image_path: fs.PathLike) =>
           .on('error', (e: any) => reject(e));
       }),
   );
-async function generateAndSaveImage() {
+export async function generateAndSaveImage() {
   let word = generateWord()
   let image = await getImages(word)
   let imageURL = `${nanoid()}.png`

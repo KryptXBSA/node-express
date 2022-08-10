@@ -8,14 +8,34 @@ import { connect, findMany, findOne, insertOne, updateOne } from '../mongo/mongo
 import { User } from '../types/user';
 import { LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../config';
 import { Post } from '../types/post';
-let likeCount = 5
-let commentCount = 5
+import { generateAndSaveImage } from './testt';
+let likeCount = 0
+let commentCount = 0
 let newUsers = 5
-let newPosts = 1
+let newPosts = 0
 let LT = 5
+type Image = Promise<{
+    word: string;
+    message: string;
+    error: boolean;
+    imageURL?: undefined;
+} | {
+    imageURL: string;
+    word: string;
+    message?: undefined;
+    error?: undefined;
+}>
 export async function registerUsers(db: any) {
     for (let i = 0; i < newUsers; i++) {
-        let user: User = { user_id: nanoid(), username: generateUsername(), password: '$2b$11$qQrJ4kUfQq9bAR0s2n8pvuoN4jSHfun0dHQO2YBr7ogksPdNixW1a' }
+        let data = await image()
+        async function image(): Image {
+            let data = await generateAndSaveImage()
+            if (data.error) {
+                return await image()
+            }
+            return data
+        }
+        let user: User = { imageUrl: data.imageURL, user_id: nanoid(), username: generateUsername(), password: '$2b$11$qQrJ4kUfQq9bAR0s2n8pvuoN4jSHfun0dHQO2YBr7ogksPdNixW1a' }
         let insertResult = await insertOne(USER_COLLECTION, user, db);
 
         let leaderboard: Leaderboard = { user_id: user.user_id, points: 0, captchaSolved: 0, posts: 0, comments: 0, likes: 0, commentsReceived: 0, likesReceived: 0 }
@@ -52,9 +72,9 @@ async function commentPost(db: any, user: User) {
 }
 async function newPost(db: any, user: User) {
     for (let i = 0; i < newPosts; i++) {
-
-        let post: Post = { post_id: nanoid(), user_id: user!.user_id, content: 'hii', imageUrl: 'filename', likes: [], comments: [], post_date: Date.now() }
-        console.log('wtffff', post.user_id);
+        let data = await generateAndSaveImage()
+        console.log(data);
+        let post: Post = { post_id: nanoid(), user_id: user!.user_id, content: data.word, imageUrl: data.imageURL, likes: [], comments: [], post_date: Date.now() }
         let insertResult = await insertOne(POST_COLLECTION, post, db);
         await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } }, db)
     }
