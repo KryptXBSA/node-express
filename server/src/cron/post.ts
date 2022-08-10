@@ -64,7 +64,7 @@ async function commentPost(db: any, user: User) {
             let post = posts[i]
 
 
-            let updateResult = await updateOne(POST_COLLECTION, { post_id: post.post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user!.user_id, content: nanoid(), comment_date: Date.now() } } }, db)
+            let updateResult = await updateOne(POST_COLLECTION, { post_id: post.post_id }, { $push: { comments: { comment_id: nanoid(), user_id: user!.user_id,username: user.username, profileImageUrl: user.imageUrl, content: nanoid(), comment_date: Date.now() } } }, db)
             await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { comments: 1, points: POINTS_PER_COMMENT } }, db)
             await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { commentsReceived: 1, points: POINTS_PER_COMMENT } }, db)
         }
@@ -74,7 +74,7 @@ async function newPost(db: any, user: User) {
     for (let i = 0; i < newPosts; i++) {
         let data = await generateAndSaveImage()
         console.log(data);
-        let post: Post = { post_id: nanoid(), user_id: user!.user_id, content: data.word, imageUrl: data.imageURL, likes: [], comments: [], post_date: Date.now() }
+        let post: Post = { post_id: nanoid(), user_id: user!.user_id,  username: user.username, profileImageUrl: user.imageUrl,content: data.word, imageUrl: data.imageURL, likes: [], comments: [], post_date: Date.now() }
         let insertResult = await insertOne(POST_COLLECTION, post, db);
         await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } }, db)
     }

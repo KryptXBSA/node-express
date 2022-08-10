@@ -20,6 +20,14 @@ export async function updateOne(collectionName: string, find: any, update: any, 
   !db && client.close()
   return updateResult;
 }
+export async function findPagination(collectionName: string,skip:number,limit:number,sort:any, obj?: any, db?: mongoDB.Db) {
+  let mainDB = db ? db : await connect()
+  const collection = mainDB.collection(collectionName);
+  const findResult: any = await collection.find(obj).skip(skip).limit(limit).sort(sort).toArray();
+ !db && client.close()
+  return findResult;
+}
+
 export async function findOne(collectionName: string, obj: any, db?: mongoDB.Db) {
   let mainDB = db ? db : await connect()
   const collection = mainDB.collection(collectionName);

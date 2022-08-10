@@ -64,7 +64,7 @@ export const newPostRoute = app.post('/new', upload.single('image'), async (req,
     }
 
 
-    let post: Post = { post_id: nanoid(), user_id: user!.user_id, content, imageUrl: filename, likes: [], comments: [], post_date: Date.now() }
+    let post: Post = { post_id: nanoid(), user_id: user!.user_id, username: user.username, profileImageUrl: user.imageUrl, content, imageUrl: filename, likes: [], comments: [], post_date: Date.now() }
     let insertResult
     insertResult = await insertOne(POST_COLLECTION, post);
     await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } })
