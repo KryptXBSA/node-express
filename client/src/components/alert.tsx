@@ -9,86 +9,10 @@ import { nanoid } from 'nanoid'
 //     },
 // ]
 let hide = 'animate__animated animate__fadeOutLeft'
-export function Alert({ alerts }) {
-    function renderAlerts() {
-        
-        return alertList.map(a => {
-            return (<Alertt forr={a.for} closing={a.closing} key={a.id} id={a.id} type={a.type} text={a.text} icon={a.icon} />)
-        })
-    }
-    useEffect(() => {
-        // setAlertList(alertState.alerts)
-        
-        
-    }, [alertState.alerts])
 
+export function InfoAlert({ text, dismiss }:any) {
     return (
-        <div className=' bottom-0 z-10 left-3 fixed'>
-            <div className='flex  flex-col-reverse'>
-                {renderAlerts()}
-            </div>
-        </div>
-    )
-}
-function Alertt({ forr, type, text, id, closing = false }) {
-
-    const { changeAlertState } = UseAlertContext();
-    const [alertClass, setAlertClass] = useState('')
-    async function closeAlert() {
-        pause(3000)
-        setAlertClass('animate__animated animate__fadeOutLeft')
-        setTimeout(changeAlertState0, 1000);
-        // changeAlertState({ action: 'remove', id: id })
-        if (forr === 'walletConnect') {
-            // changeAlertState({
-            //     action: 'push', alert: {
-            //         text: 'No Wallet Found',
-            //         type: 'danger',
-            //         for: 'noWallet',
-            //         id: nanoid()
-            //     }
-            // })
-        }
-    }
-    useEffect(() => {
-        if (closing) {
-            closeAlert()
-
-        }
-    }, [closing])
-
-    function changeAlertState0() {
-        changeAlertState({ action: 'remove', id: id })
-    }
-    let AlertType = InfoAlert;
-    switch (type) {
-        case 'info':
-            AlertType = <InfoAlert closeAlert={closeAlert} text={text} />
-            break;
-        case 'success':
-            AlertType = <SuccessAlert closeAlert={closeAlert} text={text} />
-            break;
-        case 'warning':
-            AlertType = <WarningAlert closeAlert={closeAlert} text={text} />
-            break; case 'danger':
-            AlertType = <DangerAlert closeAlert={closeAlert} text={text} />
-            break;
-        case 'special':
-            AlertType = <SpecialAlert closeAlert={closeAlert} text={text} />
-            break;
-        default:
-            // AlertType = InfoAlert
-            break;
-    }
-
-    setTimeout(closeAlert, 19000);
-    return (
-        <div className={alertClass}>
-            {AlertType}
-        </div>)
-}
-export function InfoAlert({ text, dismiss }) {
-    return (<div id="alert-border-1" className="w-96  flex p-4 mb-4 rounded-lg animate__animated animate__fadeInRight bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
+        <div id="alert-border-1" className="w-96  flex p-4 mb-4 rounded-lg animate__animated animate__fadeInRight bg-blue-100 border-t-4 border-blue-500 dark:bg-blue-200" role="alert">
         <svg className="flex-shrink-0 w-5 h-5 text-blue-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
         <div className="ml-3 text-sm font-semibold text-blue-700">
             {text}
@@ -100,7 +24,7 @@ export function InfoAlert({ text, dismiss }) {
     </div>
     )
 }
-export function SuccessAlert({ text, dismiss }) {
+export function SuccessAlert({ text, dismiss }:any) {
     return (<div id="alert-border-3" className="w-96 flex animate__animated animate__fadeInRight p-4 mb-4 rounded-lg bg-green-100 border-t-4 border-green-500 dark:bg-green-200" role="alert">
         <svg className="flex-shrink-0 w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
         <div className="ml-3 text-sm font-semibold text-green-700">
@@ -112,7 +36,7 @@ export function SuccessAlert({ text, dismiss }) {
         </button>
     </div>)
 }
-export function DangerAlertWallet({ text, dismiss }) {
+export function DangerAlertWallet({ text, dismiss }:any) {
     return (
         <div id="alert-border-2" className="w-96 rounded-lg animate__animated animate__fadeInRight flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" role="alert">
             <svg className="flex-shrink-0 w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
@@ -126,7 +50,7 @@ export function DangerAlertWallet({ text, dismiss }) {
         </div>
     )
 
-} export function DangerAlert({ text, dismiss }) {
+} export function DangerAlert({ text, dismiss }:any) {
     return (
         <div id="alert-border-2" className="w-96 rounded-lg animate__animated animate__fadeInRight flex p-4 mb-4 bg-red-100 border-t-4 border-red-500 dark:bg-red-200" role="alert">
             <svg className="flex-shrink-0 w-5 h-5 text-red-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
@@ -141,7 +65,7 @@ export function DangerAlertWallet({ text, dismiss }) {
     )
 
 }
-export function WarningAlert({ text, dismiss }) {
+export function WarningAlert({ text, dismiss }:any) {
     return (
         <div id="alert-border-4" className="w-96 rounded-lg animate__animated animate__fadeInRight flex p-4 mb-4 bg-yellow-100 border-t-4 border-yellow-500 dark:bg-yellow-200" role="alert">
             <svg className="flex-shrink-0 w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
@@ -156,7 +80,7 @@ export function WarningAlert({ text, dismiss }) {
     )
 
 }
-export function SpecialAlert({ text, dismiss }) {
+export function SpecialAlert({ text, dismiss }:any) {
     return (
         <div id="alert-border-4" className=" w-96 border-t-4 border-blue-500  rounded-lg animate__animated animate__fadeInRight flex p-4 mb-4 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-500" role="alert">
             <svg className="flex-shrink-0 w-5 h-5 text-yellow-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
@@ -170,8 +94,4 @@ export function SpecialAlert({ text, dismiss }) {
         </div>
     )
 
-}
-function pause(milliseconds) {
-    var dt = new Date();
-    while ((new Date()) - dt <= milliseconds) { /* Do nothing */ }
 }

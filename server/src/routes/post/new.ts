@@ -44,9 +44,8 @@ function checkFileType(file: Express.Multer.File, cb: multer.FileFilterCallback)
 }
 export const newPostRoute = app.post('/new', upload.single('image'), async (req, res) => {
     let file = req.file ? req.file : null
-    if (!file) return sendFailedResponse(res, 400, { message: 'Invalid file ' })
-
-    let filename = file.filename
+    let filename = ''
+    file ? filename = file.filename : filename = '';
     if (file) {
         let accepted = ACCEPTED_MIME_TYPES.includes(file.mimetype)
         if (!accepted) return sendFailedResponse(res, 400, { message: 'Invalid file type' })
