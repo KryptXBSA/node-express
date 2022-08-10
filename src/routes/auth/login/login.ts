@@ -22,7 +22,11 @@ export const loginRoute = app.post('/login', async (req, res) => {
     }
     if (findResult) {
         const correctPassword = await bcrypt.compare(user.password, findResult.password);
-        console.log(findResult);
+        console.log('findResult00',findResult);
+        console.log(correctPassword);
+        if (!correctPassword) {
+        return sendFailedResponse(res, 400, { message: 'Incorrect Password' })
+        }
         if (correctPassword) {
             const token = jwt.sign(findResult, JWT_SECRET);
             return sendSuccessRespose(res, 200, { token })

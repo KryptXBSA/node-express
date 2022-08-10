@@ -1,11 +1,14 @@
 import express from 'express';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import { nanoid } from 'nanoid'
+
 
 import { findOne, insertOne } from '../../../mongo/mongo'
 import { JWT_SECRET, USER_COLLECTION } from '../../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../../utils/response'
-import { AuthUser } from '../../../types/user';
+import { AuthUser, User } from '../../../types/user';
+
 const app = express();
 
 export const signupRoute = app.post('/signup', async (req, res) => {
@@ -22,9 +25,10 @@ export const signupRoute = app.post('/signup', async (req, res) => {
     if (findResult) {
         return sendFailedResponse(res, 400, { message: 'already registered' })
     }
+    let newUser: User = { ...user, user_id: nanoid() }
     let insertResult
     if (!findResult) {
-        insertResult = await insertOne(USER_COLLECTION, user);
+        insertResult = await insertOne(USER_COLLECTION, newUser);
         const token = jwt.sign(user, JWT_SECRET);
         return sendSuccessRespose(res, 200, { token })
     }

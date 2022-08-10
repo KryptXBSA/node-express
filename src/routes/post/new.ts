@@ -1,12 +1,13 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import { nanoid } from 'nanoid'
 
 import { findOne, insertOne, updateOne } from '../../mongo/mongo'
 import { JWT_SECRET, POST_COLLECTION, USER_COLLECTION } from '../../../config';
 import { sendSuccessRespose, sendFailedResponse } from '../../utils/response'
 import { User } from '../../types/user';
 import { NewPost, Post } from './../../types/post';
-import { verifyUser } from '../../utils/verify-jwt';
+import { verifyUser } from '../../utils/verify-user';
 
 const app = express();
 export const newPostRoute = app.post('/new', async (req, res) => {
@@ -21,7 +22,7 @@ export const newPostRoute = app.post('/new', async (req, res) => {
         return sendFailedResponse(res, 400, { message: e.issues[0].message })
     }
 
-    let post: Post = { user_id: user._id, ...newPost, likes: [], comments: [] }
+    let post: Post = { post_id:nanoid(),user_id: user.user_id, ...newPost, likes: [], comments: [] }
     let insertResult
     insertResult = await insertOne(POST_COLLECTION, post);
     const token = jwt.sign(user, JWT_SECRET);
