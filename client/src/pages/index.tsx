@@ -5,48 +5,59 @@ import { useContext, useEffect, useState } from "react";
 import { NewPost } from "../components/new-post";
 import { Post } from "../components/post/post";
 import Layout from "../sections/Layout";
+import axios from "axios";
 
 import moment from "moment";
 import { ProgramContextInterface, UseProgramContext } from "../contexts/programContextProvider";
+import { SERVER_URL } from "../../config";
 
-interface PostType {
+type Post = {
+ post_id: string;
+ user_id: string;
  username: string;
- publickeyString: string;
- content: string;
- block: string;
- date: string;
-}
+ profileImageUrl: string;
+ content?: string;
+ imageUrl?: string;
+ likes: { user_id: string; like_date: number }[];
+ comments: { user_id: string; content: string; comment_date: number }[];
+ post_date: number;
+};
 
 export default function Home() {
  const programContext = UseProgramContext()!;
 
- const [posts, setPosts] = useState<PostType[]>([]);
+ const [posts, setPosts] = useState<Post[]>([]);
  const [fetchedPosts, setFetchedPosts] = useState(false);
  useEffect(() => {
-   if (!fetchedPosts) {
-    fetchPosts();
-    setFetchedPosts(true);
-   }
+  if (!fetchedPosts) {
+   fetchPosts();
+   setFetchedPosts(true);
+  }
  }, [programContext]);
 
  async function fetchPosts() {
- 
+  try {
+   const response = await axios.post(`${SERVER_URL}/public/get-posts?skip=0`);
+   response.data;
+   setPosts(response.data);
+  } catch (error) {
+   console.error(error);
+  }
  }
 
  function displayPosts() {
-  return posts.map((p: any) => (
+  return posts.map((p) => (
    // 2 pubkey man haya 1- bo user 2- bo post
    <Post
-    commentCount={p.comments}
-    key={p.publicKey}
-    tip={18000000}
+    user_id={p.user_id}
+    imageUrl={p.imageUrl}
+    post_date={p.post_date}
+    post_id={p.post_id}
+    profileImageUrl={p.profileImageUrl}
     content={p.content}
     username={p.username}
-    date={p.timestamp}
     likes={p.likes}
-    publickeyString={p.authorDisplay}
-    block={p.block}
-    postPubkey={p.publicKey}
+    comments={p.comments}
    />
   ));
  }
@@ -61,7 +72,7 @@ export default function Home() {
     <main className="  bg-slate-900  w-1/3 flex justify-center flex-row">
      <div style={{ width: 733 }} className="flex mt-4 items-center flex-col space-y-2">
       <NewPost />
-      {/* {displayPosts()} */}
+      {displayPosts()}
       {posts.length < 7 && <div style={{ marginBottom: 999 }} className=""></div>}
      </div>
     </main>
@@ -69,4 +80,3 @@ export default function Home() {
   </>
  );
 }
-

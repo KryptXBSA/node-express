@@ -72,12 +72,9 @@ export const TipButton = ({
 };
 
 interface LikeButtonProps {
-  likes: anchor.web3.PublicKey[];
-  likePost: any;
-  unlikePost: any;
-  postPubkey: anchor.web3.PublicKey;
+  likes: any[];
 }
-export const LikeButton = ({ likes, postPubkey }: LikeButtonProps) => {
+export const LikeButton = ({ likes }: LikeButtonProps) => {
   const { notify } = useNotifier();
   //  @ts-ignore
   const programContext = UseProgramContext();
@@ -157,11 +154,9 @@ export const LikeButton = ({ likes, postPubkey }: LikeButtonProps) => {
     );
   }
   return (
-    <div className="tooltip  bg-transparent items-center flex flex-row " data-tip="Tip">
       <button onClick={likePost0} className="btn bg-transparent m-1 w-32 border-opacity-0 gap-2 ">
         {didLikePost()}
       </button>
-    </div>
   );
 };
 

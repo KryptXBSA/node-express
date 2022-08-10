@@ -1,17 +1,21 @@
 /** @format */
 
-import Link from "next/link";
 import { useRef } from "react";
 
 import { PublicKey } from "@solana/web3.js";
-import * as anchor from "@project-serum/anchor";
-interface Props {
- name: string;
- date: string;
+
+type Comment = {
+ comment_id: string;
+ user_id: string;
+ username: string;
+ profileImageUrl: string;
  content: string;
- authorPubkeyString: string;
+ comment_date: number;
+};
+type Props={
+    data:Comment
 }
-export const Comment = ({ name, date, content, authorPubkeyString }: Props) => {
+export const Comment = ({ data }: Props) => {
  return (
   <div>
    <div className="h-1 border-b-2 my-2 border-gray-700"></div>
@@ -26,19 +30,17 @@ export const Comment = ({ name, date, content, authorPubkeyString }: Props) => {
      </div>
      <div className="flex break-all flex-col">
       <div>
-       <span className=" text-xl ">{name}</span> <span>&nbsp;•&nbsp;</span>
-       <span className="text-1xl"> {date}</span>
+       <span className=" text-xl ">{data.username}</span> <span>&nbsp;•&nbsp;</span>
+       <span className="text-1xl"> {data.comment_date}</span>
       </div>
-      <Link href={`/users?pubkey=${authorPubkeyString}`}>
-       <p
-        style={{ marginTop: -7 }}
-        className=" text-sm text-blue-500 hover:underline truncate  w-44">
-        {authorPubkeyString}
-       </p>
-      </Link>
+      <p
+       style={{ marginTop: -7 }}
+       className=" text-sm text-blue-500 hover:underline truncate  w-44">
+       {data.username}
+      </p>
      </div>
     </div>
-    <span className="ml-5 ">{content}</span>
+    <span className="ml-5 ">{data.content}</span>
    </div>
   </div>
  );
@@ -50,15 +52,14 @@ interface NewCommentProps {
 import { UseProgramContext } from "../../contexts/programContextProvider";
 import { useNotifier } from "react-headless-notifier";
 
-export const NewComment = ({ postPubkey }: NewCommentProps) => {
+export const NewComment = ({ postPubkey }: any) => {
  let commentInputRef: any = useRef();
 
  const { notify } = useNotifier();
  let programContext = UseProgramContext()!;
- 
+
  async function newComment0(e: { preventDefault: () => void }) {
   e.preventDefault();
- 
  }
 
  return (
