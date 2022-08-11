@@ -26,7 +26,7 @@ export const signupRoute = app.post('/signup', async (req, res) => {
     if (findResult) {
         return sendFailedResponse(res, 400, { message: 'already registered' })
     }
-    let newUser: User = { ...user, user_id: nanoid(), imageUrl: 'default.png' }
+    let newUser: User = { ...user, user_id: nanoid(), imageUrl: 'defaultt.png' }
     let insertResult
     if (!findResult) {
         insertResult = await insertOne(USER_COLLECTION, newUser);

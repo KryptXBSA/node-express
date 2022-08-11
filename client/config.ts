@@ -1,6 +1,7 @@
-export const SERVER_URL = 'http://localhost:7002'
-export const SOCKER_SERVER_URL = "ws://localhost:7004/"
-export const IMAGE_SERVER_URL = 'http://localhost:7002/images'
+let production = true
+export const SERVER_URL = production ? 'https://api.kurdmake.com' : 'http://localhost:7002'
+export const SOCKER_SERVER_URL = production ? 'https://socket.kurdmake.com' : 'http://localhost:7002'
+export const IMAGE_SERVER_URL = production ? 'https://api.kurdmake.com' : 'http://localhost:7002'
 
 export const PORT = process.env.PORT! || 7002
 export const JWT_SECRET = "secret"

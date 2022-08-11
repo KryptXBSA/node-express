@@ -68,11 +68,13 @@ export const Sidebar = ({ active }: { active: number | undefined }) => {
      <div className=" mb-8 ml-6 mt-auto">
       <div className="flex cursor-pointer items-center">
        <Link href="/settings">
-        <div className="flex cursor-pointer items-center">
+        <div className="cursor-pointer items-center">
          <div className="pb- pr-2">
           <img
            className="w-10 h-10  rounded-full"
-           src={`${IMAGE_SERVER_URL}/${programContext.state.user.imageUrl}`}
+           src={`${IMAGE_SERVER_URL}/${
+            programContext.state.user.imageUrl ? programContext.state.user.imageUrl : "defaultt.png"
+           }`}
           />
          </div>
          <span className=" text-2xl hover:text-slate-400 ">

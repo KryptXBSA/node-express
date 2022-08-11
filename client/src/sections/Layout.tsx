@@ -133,7 +133,11 @@ function Login() {
   try {
    const response = await axios.post(`${SERVER_URL}/login`, data);
    if (response.data.token) {
-    programContext!.changeState({ action: "change", token: response.data.token });
+    programContext!.changeState({
+     action: "change",
+     token: response.data.token,
+     user: parseJwt(response.data.token),
+    });
     setCookie("token", response.data.token);
    }
   } catch (error: any) {
