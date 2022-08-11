@@ -5,6 +5,7 @@ import * as path from "path";
 dotenv.config({ path: ".env" });
 
 export const PORT = process.env.PORT! || 7002
+export const SOCKET_PORT = process.env.PORT! || 7004
 export const JWT_SECRET = "secret"
 export const MONGO_CONNECTION_STRING = 'mongodb+srv://test:test@cluster0.wkig6v5.mongodb.net/?retryWrites=true&w=majority'
 export const DB_NAME = "test"
