@@ -5,8 +5,9 @@ import jwt from 'jsonwebtoken';
 
 
 import { JWT_SECRET, USER_COLLECTION } from '../../config';
+import { Socket } from 'socket.io';
 
-export async function verifyUser(req: express.Request) {
+export async function verifyUser(req: any) {
     try {
         let validToken: any = jwt.verify(req.headers.authorization!, JWT_SECRET)
         let findResult = await findOne(USER_COLLECTION, { user_id: validToken.user_id })
@@ -15,10 +16,7 @@ export async function verifyUser(req: express.Request) {
         if (!validToken1) return { error: true, message: 'Invalid token0' }
         return { error: false, token: validToken, user: findResult, }
     } catch (e) {
-        console.log(e);
-
         return { error: true, message: 'Invalid token1' }
-
     }
 }
 function verifyObjects(o1: User, o2: User) {

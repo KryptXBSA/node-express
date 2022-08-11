@@ -73,7 +73,6 @@ export const Sidebar = ({ active }: { active: number | undefined }) => {
           <img
            className="w-10 h-10  rounded-full"
            src={`${IMAGE_SERVER_URL}/${programContext.state.user.imageUrl}`}
-           alt="Rounded avatar"
           />
          </div>
          <span className=" text-2xl hover:text-slate-400 ">

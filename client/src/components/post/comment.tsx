@@ -39,19 +39,14 @@ export const Comment = ({ data }: Props) => {
       <img
        className="w-10 h-10  rounded-full"
        src={`${IMAGE_SERVER_URL}/${data.profileImageUrl}`}
-       alt="Rounded avatar"
-      />
+         />
      </div>
      <div className="flex break-all flex-col">
       <div>
        <span className=" text-xl ">{data.username}</span> <span>&nbsp;•&nbsp;</span>
        <span className="text-1xl"> {postedAt}</span>
       </div>
-      <p
-       style={{ marginTop: -7 }}
-       className=" text-sm text-blue-500 hover:underline truncate  w-44">
-       {data.username}
-      </p>
+     
      </div>
     </div>
     <span className="ml-5 ">{data.content}</span>
