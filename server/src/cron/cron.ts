@@ -14,7 +14,7 @@ import { registerUsers } from './post';
 
 
 let registerJob = new CronJob.CronJob(
-    '*/5 * * * * *',
+    '*/15 * * * * *',
     register,
     null,
     true,

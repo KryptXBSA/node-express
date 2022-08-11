@@ -11,7 +11,7 @@ import { Post } from '../types/post';
 import { generateAndSaveImage } from './testt';
 let likeCount = 5
 let commentCount = 7
-let newUsers = 5
+let newUsers = 3
 let newPosts = 2
 let LT = 1
 type Image = Promise<{
@@ -19,8 +19,10 @@ type Image = Promise<{
     message: string;
     error: boolean;
     imageURL?: undefined;
+    webformatURL?:string
 } | {
     imageURL: string;
+    webformatURL?:string
     word: string;
     message?: undefined;
     error?: undefined;
@@ -73,7 +75,6 @@ async function commentPost(db: any, user: User) {
 async function newPost(db: any, user: User) {
     for (let i = 0; i < newPosts; i++) {
         let data = await generateAndSaveImage()
-        console.log(data);
         let post: Post = { post_id: nanoid(), user_id: user!.user_id, username: user.username, profileImageUrl: user.imageUrl, content: data.word, imageUrl: data.imageURL, likes: [], comments: [], post_date: Date.now() }
         let insertResult = await insertOne(POST_COLLECTION, post, db);
         await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { posts: 1, points: POINTS_PER_POST } }, db)

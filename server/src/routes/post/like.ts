@@ -37,11 +37,12 @@ export const likePostRoute = app.post('/like', async (req, res) => {
         await updateOne(POST_COLLECTION, { post_id: post_id }, { $pull: { likes: { user_id: user!.user_id } } })
         await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { likes: -1, points: -POINTS_PER_LIKE } })
         await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { likesReceived: -1, points: -POINTS_PER_LIKE } })
+        return sendSuccessRespose(res, 200, { message: "unliked" })
     } else {
         if (post.likes.find(p => p.user_id === user!.user_id)) return sendFailedResponse(res, 400, { message: 'Already liked' })
         await updateOne(POST_COLLECTION, { post_id: post_id }, { $push: { likes: { like_id: nanoid(), user_id: user!.user_id, like_date: Date.now() } } })
         await updateOne(LEADERBOARD_COLLECTION, { user_id: user.user_id }, { $inc: { likes: 1, points: POINTS_PER_LIKE } })
         await updateOne(LEADERBOARD_COLLECTION, { user_id: post.user_id }, { $inc: { likesReceived: 1, points: POINTS_PER_LIKE } })
+        return sendSuccessRespose(res, 200, { message: "liked" })
     }
-    return sendSuccessRespose(res, 200, { message: "success" })
 })

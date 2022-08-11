@@ -12,6 +12,7 @@ import { UseProgramContext } from "../../contexts/programContextProvider";
 import { useEffect } from "react";
 import { Post } from "../../types/post";
 import { IMAGE_SERVER_URL } from "../../../config";
+import { Waypoint } from "react-waypoint";
 
 export function Post({
  likes,
@@ -29,7 +30,10 @@ export function Post({
  function displayComments() {
   setCommentsVisible(!commentsVisible);
   setPostComments(
-   <>{postComments.length > 0 && postComments.map((c: any) => <Comment data={c} />)}</>
+   <>
+    {postComments.length > 0 &&
+     postComments.map((c: any) => <Comment post_id={post_id} data={c} />)}
+   </>
   );
  }
  const [postedAt, setPostedAt] = useState(moment(new Date(post_date).toUTCString()).fromNow());
@@ -52,10 +56,7 @@ export function Post({
       <div className="flex justify-start   items-center flex-row">
        <div className="flex cursor-pointer items-center">
         <div className="pb- pr-2">
-         <img
-          className="w-10 h-10  rounded-full"
-          src={`${IMAGE_SERVER_URL}/${profileImageUrl}`}
-         />
+         <img className="w-10 h-10  rounded-full" src={`${IMAGE_SERVER_URL}/${profileImageUrl}`} />
         </div>
         <span className=" text-2xl ">{username}</span>
        </div>
@@ -66,10 +67,10 @@ export function Post({
     </div>
     <p className=" w-fit p- break-words">{content}</p>
     <div className="pb- pr-2">
-     <img className="" src={`${IMAGE_SERVER_URL}/${imageUrl}`} />
+     {imageUrl && <img className="" src={`${IMAGE_SERVER_URL}/${imageUrl}`} />}
     </div>
     <div className="flex   justify-around items-stretch flex-row">
-     <LikeButton likes={likes} />
+     <LikeButton likes={likes} post_id={post_id} />
      <CommentButton commentCount={comments.length} setCommentsVisible={() => displayComments()} />
      {/* <div className="tooltip" data-tip="Coming Soon"> */}
      {/* <ShareButton /> */}
@@ -80,7 +81,7 @@ export function Post({
      <>
       {postComments}
       {!postComments && <div className="divider"></div>}
-      <NewComment />
+      <NewComment post_id={post_id} />
      </>
     )}
    </div>

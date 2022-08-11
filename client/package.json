@@ -27,6 +27,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-headless-notifier": "^0.1.6",
+    "react-waypoint": "^10.3.0",
     "zod": "^3.18.0"
   },
   "devDependencies": {

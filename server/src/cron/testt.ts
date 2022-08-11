@@ -65,12 +65,17 @@ const download_image = (url: any, image_path: fs.PathLike) =>
   );
 export async function generateAndSaveImage() {
   let word = generateWord()
-  let image = await getImages(word)
-  let imageURL = `${nanoid()}.png`
-  if (image.hits.length === 0) {
-    return { word, message: "Bad word", error: true }
+  try {
+    let image = await getImages(word)
+    let imageURL = `${nanoid()}.png`
+    if (image.hits.length === 0) {
+      return { word, message: "Bad word", error: true }
+    }
+    await download_image(image.hits[0].largeImageURL, `./images/${imageURL}`);
+    return { imageURL, word }
+  } catch (error) {
+    return { word, message: "Erorr", error: true }
   }
-  await download_image(image.hits[0].largeImageURL, `./images/${imageURL}`);
-  return { imageURL, word }
+
 }
 

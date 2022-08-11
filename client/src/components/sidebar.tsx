@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { UseProgramContext } from "../contexts/programContextProvider";
 import { setCookie, getCookie } from "cookies-next";
+import { IMAGE_SERVER_URL } from "../../config";
 
 let marketPlaceIcon = (
  <svg
@@ -71,7 +72,7 @@ export const Sidebar = ({ active }: { active: number | undefined }) => {
          <div className="pb- pr-2">
           <img
            className="w-10 h-10  rounded-full"
-           src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+           src={`${IMAGE_SERVER_URL}/${programContext.state.user.imageUrl}`}
            alt="Rounded avatar"
           />
          </div>

@@ -34,7 +34,6 @@ export const commentRoute = app.post('/comment', async (req, res) => {
 
     let post: Post = await findOne(POST_COLLECTION, { post_id: comment.post_id })
     if (!post) return sendFailedResponse(res, 400, { message: 'Post not found' })
-    console.log(post);
 
     let comment1 = { comment_id: nanoid(), user_id: user!.user_id, username: user.username, profileImageUrl: user.imageUrl, content: comment.content, comment_date: Date.now() }
     let updateResult = await updateOne(POST_COLLECTION, { post_id: comment.post_id }, { $push: { comments: comment1 } })

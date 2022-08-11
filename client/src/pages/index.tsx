@@ -10,6 +10,7 @@ import axios from "axios";
 import moment from "moment";
 import { ProgramContextInterface, UseProgramContext } from "../contexts/programContextProvider";
 import { SERVER_URL } from "../../config";
+import { Waypoint } from "react-waypoint";
 
 type Post = {
  post_id: string;
@@ -37,6 +38,16 @@ export default function Home() {
  function addPost(post: any) {
   setPosts([post].concat(posts));
  }
+ async function fetchMore() {
+  try {
+   const response = await axios.post(`${SERVER_URL}/public/get-posts?skip=${posts.length}`);
+   response.data;
+   
+   setPosts(posts.concat(response.data));
+  } catch (error) {
+   console.error(error);
+  }
+ }
  async function fetchPosts() {
   try {
    const response = await axios.post(`${SERVER_URL}/public/get-posts?skip=0`);
@@ -51,7 +62,7 @@ export default function Home() {
   return posts.map((p) => (
    // 2 pubkey man haya 1- bo user 2- bo post
    <Post
-   key={p.post_id}
+    key={p.post_id}
     user_id={p.user_id}
     imageUrl={p.imageUrl}
     post_date={p.post_date}
@@ -76,6 +87,8 @@ export default function Home() {
      <div style={{ width: 733 }} className="flex mt-4 items-center flex-col space-y-2">
       <NewPost addPost={addPost} />
       {displayPosts()}
+      <Waypoint onEnter={fetchMore} />
+      <div style={{ marginBottom: 199 }} className=""></div>
       {posts.length < 7 && <div style={{ marginBottom: 999 }} className=""></div>}
      </div>
     </main>
