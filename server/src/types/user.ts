@@ -12,7 +12,8 @@ export const SettingsUser = z.object({
     username: z.string().max(9).optional(),
     currentPassword: z.string().max(9),
     newPassword: z.string().max(9).optional(),
-}).refine(({ username, newPassword }) =>
-    username !== undefined || newPassword !== undefined,
-    { message: "One of the fields must be defined" })
+})
+// .refine(({ username, newPassword }) =>
+//     username !== undefined || newPassword !== undefined,
+//     { message: "One of the fields must be defined" })
 export type SettingsUser = z.infer<typeof SettingsUser>;

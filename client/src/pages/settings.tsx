@@ -9,7 +9,11 @@ import Layout from "../sections/Layout";
 import { setCookie, getCookie } from "cookies-next";
 import axios from "axios";
 import moment from "moment";
-import { ProgramContextInterface, UseProgramContext } from "../contexts/programContextProvider";
+import {
+ parseJwt,
+ ProgramContextInterface,
+ UseProgramContext,
+} from "../contexts/programContextProvider";
 import { Leaderboard } from "../types/leaderboard";
 import { SERVER_URL } from "../../config";
 
@@ -57,30 +61,44 @@ function Settings() {
  let currentPasswordRef: any = useRef("");
  let newPassword: any = useRef("");
  let imageRef: any = useRef("");
+
  const [file, setFile]: any = useState();
+ const [error, setError] = useState("");
+
  async function submit(e: { preventDefault: () => void }) {
   e.preventDefault();
-  if (file) {
-   const formData = new FormData();
-   formData.append("image", file!);
-   formData.append("currentPassword", currentPasswordRef.current.value);
-   if (usernameRef.current.value) formData.append("username", usernameRef.current.value);
-   if (newPassword.current.value) formData.append("newPassword", newPassword.current.value);
-   try {
-    const response = await axios.post(`${SERVER_URL}/settings/profile`, formData, {
-     headers: {
-      "Content-Type": "multipart/form-data",
-      authorization: programContext?.state.token,
-     },
-    });
-    if (response.status === 200) {
-     imageRef.current.value = "";
-    }
-    setCookie("token", response.data.token);
-    console.log(response);
-   } catch (e: any) {
-    console.log(e);
+
+  const formData = new FormData();
+  formData.append("currentPassword", currentPasswordRef.current.value);
+  if (file) formData.append("image", file!);
+  if (usernameRef.current.value) formData.append("username", usernameRef.current.value);
+  if (newPassword.current.value) formData.append("newPassword", newPassword.current.value);
+  try {
+   const response = await axios.post(`${SERVER_URL}/settings/profile`, formData, {
+    headers: {
+     "Content-Type": "multipart/form-data",
+     authorization: programContext?.state.token,
+    },
+   });
+   if (response.status === 200) {
+    imageRef.current.value = "";
+    usernameRef.current.value = "";
+    currentPasswordRef.current.value = "";
+    newPassword.current.value = "";
    }
+   setError("success");
+
+   programContext.changeState({
+    action: "change",
+    token: response.data.token,
+    user: parseJwt(response.data.token),
+   });
+   setCookie("token", response.data.token);
+  } catch (e: any) {
+   setError(e.response.data.message);
+   console.log(e.response.data.message);
+
+   console.log("eeee", e);
   }
  }
  return (
@@ -143,7 +161,11 @@ function Settings() {
      <div className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help"></div>
     </>
    </div>
-
+   {error && error === "success" ? (
+    <div className="text-green-500">{error} </div>
+   ) : (
+    <div className="text-red-500">{error} </div>
+   )}
    <button
     type="submit"
     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
