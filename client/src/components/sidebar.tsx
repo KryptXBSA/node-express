@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { UseProgramContext } from "../contexts/programContextProvider";
+import { setCookie, getCookie } from "cookies-next";
 
 let marketPlaceIcon = (
  <svg
@@ -53,21 +54,19 @@ let homeIcon = (
  </svg>
 );
 export const Sidebar = ({ active }: { active: number | undefined }) => {
-
  const programContext = UseProgramContext()!;
 
  return (
   <div className="flex z-20  flex-col">
    <div className="flex w-52 z-20   h-full bg-slate-800 flex-col left-0 fixed">
-    <div className="h-20 w-52  mb-2 border-gray-700  z-10 top-0 bg-slate-800 inline-flex items-center">
-    </div>
+    <div className="h-20 w-52  mb-2 border-gray-700  z-10 top-0 bg-slate-800 inline-flex items-center"></div>
     <Button icon={homeIcon} index={0} active={active} href="/" text="Home" />
     <Button icon={profileIcon} index={1} active={active} href="/leaderboard" text="Leaderboard" />
     <Button icon={profileIcon} index={2} active={active} href="/captcha" text="Captcha" />
     {true && (
      <div className=" mb-8 ml-6 mt-auto">
       <div className="flex cursor-pointer items-center">
-       <Link href="/profile">
+       <Link href="/settings">
         <div className="flex cursor-pointer items-center">
          <div className="pb- pr-2">
           <img
@@ -77,13 +76,14 @@ export const Sidebar = ({ active }: { active: number | undefined }) => {
           />
          </div>
          <span className=" text-2xl hover:text-slate-400 ">
-          username
+          {programContext.state.user.username}
          </span>
         </div>
        </Link>
        <svg
         onClick={() => {
-        console.log('logout');
+         programContext!.changeState({ action: "logout", token: "" });
+         setCookie("token", "");
         }}
         xmlns="http://www.w3.org/2000/svg"
         className="w-6 ml-2 h-6 hover:fill-slate-400 fill-slate-300"
@@ -122,4 +122,3 @@ export const Button = ({ href, text, index, active, icon }: any) => {
   </Link>
  );
 };
-

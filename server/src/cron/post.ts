@@ -9,11 +9,11 @@ import { User } from '../types/user';
 import { LEADERBOARD_COLLECTION, POST_COLLECTION, USER_COLLECTION } from '../../config';
 import { Post } from '../types/post';
 import { generateAndSaveImage } from './testt';
-let likeCount = 0
-let commentCount = 0
+let likeCount = 5
+let commentCount = 7
 let newUsers = 5
-let newPosts = 0
-let LT = 5
+let newPosts = 2
+let LT = 1
 type Image = Promise<{
     word: string;
     message: string;

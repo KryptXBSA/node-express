@@ -1,5 +1,5 @@
 export const SERVER_URL = 'http://localhost:7002'
-export const IMAGE_URL = 'http://localhost:7002/images'
+export const IMAGE_SERVER_URL = 'http://localhost:7002/images'
 
 export const PORT = process.env.PORT! || 7002
 export const JWT_SECRET = "secret"

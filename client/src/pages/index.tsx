@@ -34,7 +34,9 @@ export default function Home() {
    setFetchedPosts(true);
   }
  }, [programContext]);
-
+ function addPost(post: any) {
+  setPosts([post].concat(posts));
+ }
  async function fetchPosts() {
   try {
    const response = await axios.post(`${SERVER_URL}/public/get-posts?skip=0`);
@@ -49,6 +51,7 @@ export default function Home() {
   return posts.map((p) => (
    // 2 pubkey man haya 1- bo user 2- bo post
    <Post
+   key={p.post_id}
     user_id={p.user_id}
     imageUrl={p.imageUrl}
     post_date={p.post_date}
@@ -71,7 +74,7 @@ export default function Home() {
    <Layout active={0}>
     <main className="  bg-slate-900  w-1/3 flex justify-center flex-row">
      <div style={{ width: 733 }} className="flex mt-4 items-center flex-col space-y-2">
-      <NewPost />
+      <NewPost addPost={addPost} />
       {displayPosts()}
       {posts.length < 7 && <div style={{ marginBottom: 999 }} className=""></div>}
      </div>

@@ -11,6 +11,7 @@ import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { UseProgramContext } from "../../contexts/programContextProvider";
 import { useEffect } from "react";
 import { Post } from "../../types/post";
+import { IMAGE_SERVER_URL } from "../../../config";
 
 export function Post({
  likes,
@@ -53,8 +54,7 @@ export function Post({
         <div className="pb- pr-2">
          <img
           className="w-10 h-10  rounded-full"
-          src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-          alt="Rounded avatar"
+          src={`${IMAGE_SERVER_URL}/${profileImageUrl}`}
          />
         </div>
         <span className=" text-2xl ">{username}</span>
@@ -65,6 +65,9 @@ export function Post({
      </div>
     </div>
     <p className=" w-fit p- break-words">{content}</p>
+    <div className="pb- pr-2">
+     <img className="" src={`${IMAGE_SERVER_URL}/${imageUrl}`} />
+    </div>
     <div className="flex   justify-around items-stretch flex-row">
      <LikeButton likes={likes} />
      <CommentButton commentCount={comments.length} setCommentsVisible={() => displayComments()} />

@@ -1,16 +1,16 @@
 import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
+import { ProgramWrapper } from '../contexts/programContextProvider';
 import { ThemeProvider } from "next-themes";
-import dynamic from "next/dynamic";
 import 'animate.css';
 import { NotifierContextProvider } from 'react-headless-notifier';
-
 
 
 function MyApp({ Component, pageProps }) {
 
   return (
       <ThemeProvider enableSystem={true} attribute="class">
+          <ProgramWrapper>
             <NotifierContextProvider
               // All props are optional, those are the values by default
               config={{
@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }) {
             >
                 <Component {...pageProps} />
             </NotifierContextProvider>
+</ProgramWrapper>
       </ThemeProvider>
   );
 }

@@ -14,6 +14,7 @@
     "mongodb": "^4.8.1",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^3.3.4",
+    "path": "^0.12.7",
     "random-word-slugs": "^0.1.6",
     "unique-username-generator": "^1.1.1",
     "zod": "^3.17.10"
