@@ -15,12 +15,14 @@ import {
 import { Leaderboard } from "../types/leaderboard";
 import { SERVER_URL } from "../../config";
 import { client } from "../utils/api";
+import { trpc } from "../utils/trpc";
 
-const test = await client.getUser.query("hi");
+// const test = await client.getUser.query("hi");
 export default function Home() {
-  const programContext = UseProgramContext()!;
 
-  console.log(test);
+  const hello = trpc.getUser.useQuery("hi");
+
+  console.log(hello.data);
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [fetchedLeaderboard, setFetchedLeaderboard] = useState(false);
   useEffect(() => {
