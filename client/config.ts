@@ -1,6 +1,6 @@
-let production = true
+let production = false
 export const SERVER_URL = production ? 'https://api.kurdmake.com' : 'http://localhost:7002'
-export const SOCKER_SERVER_URL = production ? 'https://socket.kurdmake.com' : 'http://localhost:7002'
+export const SOCKER_SERVER_URL = production ? 'https://socket.kurdmake.com' : 'http://localhost:7004'
 export const IMAGE_SERVER_URL = production ? 'https://api.kurdmake.com' : 'http://localhost:7002'
 
 export const PORT = process.env.PORT! || 7002

@@ -63,7 +63,7 @@ function Captcha({ word }: Captcha) {
  function socketConnect() {
   setSocket(
    io(SOCKER_SERVER_URL, {
-    withCredentials: true,
+    withCredentials: false,
     extraHeaders: {
      authorization: programContext.state.token,
     },

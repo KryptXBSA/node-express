@@ -3,6 +3,11 @@
  "version": "1.0.0",
  "description": "Express typescript.",
  "dependencies": {
+  "@tanstack/react-query": "^4.24.4",
+  "@trpc/client": "^10.10.0",
+  "@trpc/next": "^10.10.0",
+  "@trpc/react-query": "^10.10.0",
+  "@trpc/server": "^10.10.0",
   "axios": "^0.27.2",
   "bcrypt": "^5.0.1",
   "cors": "^2.8.5",

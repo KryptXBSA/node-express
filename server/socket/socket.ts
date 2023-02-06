@@ -9,7 +9,7 @@ import { verifyUser } from '../src/utils/verify-user';
 const httpServer = createServer();
 const io = new Server(httpServer, {
     cors: {
-        origin: SOCKET_CLIENT_SERVER,
+        origin: "*",
         allowedHeaders: ["authorization"],
         credentials: true
     }

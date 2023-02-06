@@ -1,6 +1,5 @@
 /** @format */
 
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { DispatchWithoutAction, useEffect, useState } from "react";
 
 import { ProgramContext, UseProgramContext } from "../../contexts/programContextProvider";
@@ -27,47 +26,6 @@ export const BookmarkButton = ({ bookmarked }: { bookmarked: boolean }) => {
     </svg>
    </div>
   </div>
- );
-};
-
-export const TipButton = ({
- text,
- likePost,
- unlikePost,
- postPubkey,
- postLikes,
- setShowTipModal,
-}: any) => {
- const wallet = useAnchorWallet();
- const [didLike, setDidLike] = useState(false);
-
- const [likedPost, setLikedPost] = useState(false);
- function checkPostLikes(walletPubkey: string | null, postLikes: any[]) {
-  postLikes.forEach((p: { toBase58: () => any }) => {
-   if (walletPubkey === "p.toBase58()") {
-    setDidLike(true);
-    setLikedPost(true);
-   } else {
-    setDidLike(false);
-    setLikedPost(false);
-   }
-  });
- }
-
- useEffect(() => {
-  let wallet0 = wallet ? wallet.publicKey.toBase58() : localStorage.getItem("waallet");
-  checkPostLikes(wallet0, ["postLikes"]);
- }, [wallet]);
- return (
-  <>
-   <div className="tooltip  bg-transparent items-center flex flex-row " data-tip="Tip">
-    <button
-     onClick={() => setShowTipModal(true)}
-     className="btn bg-transparent m-1 w-32 border-opacity-0 gap-2 ">
-     <img className="  h-7 w-7 rounded-full  " src="/icons/sol-icon.png" />
-    </button>
-   </div>
-  </>
  );
 };
 
