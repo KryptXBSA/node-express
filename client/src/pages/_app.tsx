@@ -6,7 +6,7 @@ import 'animate.css';
 import { NotifierContextProvider } from 'react-headless-notifier';
 
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }:any) {
 
   return (
       <ThemeProvider enableSystem={true} attribute="class">
@@ -27,3 +27,4 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+// export default api.withTRPC(MyApp);

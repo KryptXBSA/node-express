@@ -15,7 +15,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async (
+export const createContext = async (
   opts: trpcExpress.CreateExpressContextOptions
 ) => {
   // const { req, res } = opts;
@@ -29,8 +29,8 @@ export const createTRPCContext = async (
 };
 
 const t = initTRPC
+  .context<typeof createContext>()
   .meta<OpenApiMeta>()
-  .context<typeof createTRPCContext>()
   .create({
     transformer: superjson,
     errorFormatter({ shape }) {
