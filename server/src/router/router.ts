@@ -1,4 +1,3 @@
-
 import { t } from "../trpc/trpc";
 import { z } from "zod";
 export const userRouter = t.router({
@@ -8,6 +7,17 @@ export const userRouter = t.router({
   }),
   createUser: t.procedure
     .input(z.object({ name: z.string().min(5) }))
+    .output(z.string())
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/auth/login",
+        tags: ["auth"],
+        summary: "Login as an existing user",
+        description: "*fashfoihihfohasfhhhasfihffihasifhahaiifhasshf",
+        protect: true,
+      },
+    })
     .mutation(async (req) => {
       // use your ORM of choice
       return "hiii from mutation";
