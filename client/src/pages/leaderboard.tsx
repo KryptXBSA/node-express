@@ -14,13 +14,12 @@ import {
 } from "../contexts/programContextProvider";
 import { Leaderboard } from "../types/leaderboard";
 import { SERVER_URL } from "../../config";
-import { client } from "../utils/api";
 import { trpc } from "../utils/trpc";
 
 // const test = await client.getUser.query("hi");
 export default function Home() {
-  const hello = trpc.getUser.useQuery("hi");
-  const create = trpc.createUser.useMutation({});
+  const hello = trpc.user.getUser.useQuery("hi");
+  const create = trpc.user.createUser.useMutation({});
 
   console.log(create.data);
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);

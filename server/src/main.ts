@@ -6,17 +6,13 @@ import { createOpenApiExpressMiddleware } from "trpc-openapi";
 import "dotenv/config";
 import path from "path";
 import { openApiDocument } from "./openapi/openapi";
-import { appRouter, createContext } from "./trpc/trpc";
+import {  createContext } from "./trpc/trpc";
+import { appRouter } from "./router/router";
 
 const app = express();
 
 var dir = path.join(__dirname, "..", "images");
 app.use("/images", express.static(dir));
-
-const port = process.env.PORT || 7002;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
 
 // Setup CORS
 app.use(cors());
@@ -36,6 +32,7 @@ app.use(
 app.use("/", swaggerUi.serve);
 app.get("/", swaggerUi.setup(openApiDocument));
 
-app.listen(3000, () => {
-  console.log("Server started on http://localhost:3000");
+const port = process.env.PORT || 7002;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });

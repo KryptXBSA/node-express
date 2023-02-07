@@ -1,6 +1,5 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { z } from "zod";
 import { OpenApiMeta } from "trpc-openapi";
 import * as trpcExpress from "@trpc/server/adapters/express";
 
@@ -28,7 +27,7 @@ export const createContext = async (
   });
 };
 
-const t = initTRPC
+export const t = initTRPC
   .context<typeof createContext>()
   .meta<OpenApiMeta>()
   .create({
@@ -38,24 +37,4 @@ const t = initTRPC
     },
   });
 
-export const userRouter = t.router({
-  getUser: t.procedure.input(z.string()).query((req) => {
-    req.input; // string
-    return { id: req.input, name: "Bilbo" };
-  }),
-  createUser: t.procedure
-    .input(z.object({ name: z.string().min(5) }))
-    .mutation(async (req) => {
-      // use your ORM of choice
-      return "hiii from mutation";
-      // return await UserModel.create({
-      //   data: req.input,
-      // });
-    }),
-});
 
-export const appRouter = t.router({
-  user: userRouter,
-});
-
-export type AppRouter = typeof appRouter;

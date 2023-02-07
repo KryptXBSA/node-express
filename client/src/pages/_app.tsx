@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: any) {
       transformer: superjson,
       links: [
         httpBatchLink({
-          url: "http://localhost:7002/trpc",
+          url: "http://localhost:7002/api/trpc",
           // optional
           // headers() {
           //   return {
