@@ -21,7 +21,7 @@ export default function Home() {
   const hello = trpc.user.getUser.useQuery("hi");
   const create = trpc.user.createUser.useMutation({});
 
-  console.log(create.data);
+  console.log("create.data",create.data);
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [fetchedLeaderboard, setFetchedLeaderboard] = useState(false);
   useEffect(() => {

@@ -14,8 +14,6 @@ import {
 } from "../contexts/programContextProvider";
 import { SERVER_URL } from "../../config";
 import { Waypoint } from "react-waypoint";
-import { api } from "../../../server/src/trpc/api";
-import { client } from "../utils/api";
 
 type Post = {
   post_id: string;
@@ -30,8 +28,6 @@ type Post = {
 };
 
 export default function Home() {
-  const test = client.getUser.query("hi")
-  console.log(test)
   const programContext = UseProgramContext()!;
 
   const [posts, setPosts] = useState<Post[]>([]);

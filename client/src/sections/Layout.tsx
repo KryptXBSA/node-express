@@ -1,5 +1,5 @@
 /** @format */
-
+import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Sidebar } from "../components/sidebar";
@@ -22,12 +22,16 @@ const Layout = ({
   active?: number;
   page?: string;
 }) => {
+  const session = useSession();
+  console.log("Session  ", session);
   const { notify } = useNotifier();
   let programContext: any = UseProgramContext();
   const [loggedIn, setLoggedIn] = useState(programContext.state.loggedIn);
+
   useEffect(() => {
     setLoggedIn(programContext.state.loggedIn);
   }, [programContext]);
+
   if (!loggedIn) {
     return (
       <div className="">
@@ -43,6 +47,7 @@ const Layout = ({
       </div>
     );
   }
+
   return (
     <>
       <Head>
@@ -184,6 +189,8 @@ function Login() {
       </div>
       {error && <div className="text-red-500">{error} </div>}
       <div className="flex items-start mb-6"></div>
+      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signOut()}>Sign Out</button>
       <button
         type="submit"
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

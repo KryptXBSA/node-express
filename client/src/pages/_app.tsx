@@ -4,6 +4,7 @@ import { ProgramWrapper } from "../contexts/programContextProvider";
 import { ThemeProvider } from "next-themes";
 import "animate.css";
 import { NotifierContextProvider } from "react-headless-notifier";
+import { SessionProvider } from "next-auth/react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
@@ -12,7 +13,7 @@ import { trpc } from "../utils/trpc";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import superjson from "superjson";
-function MyApp({ Component, pageProps }: any) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -20,12 +21,11 @@ function MyApp({ Component, pageProps }: any) {
       links: [
         httpBatchLink({
           url: "http://localhost:7002/api/trpc",
-          // optional
-          // headers() {
-          //   return {
-          //     // authorization: getAuthCookie(),
-          //   };
-          // },
+          headers() {
+            return {
+              // authorization: getAuth(),
+            };
+          },
         }),
       ],
     })
@@ -45,7 +45,9 @@ function MyApp({ Component, pageProps }: any) {
           <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
               <ReactQueryDevtools initialIsOpen={false} />
-              <Component {...pageProps} />
+              <SessionProvider session={session}>
+                <Component {...pageProps} />
+              </SessionProvider>
             </QueryClientProvider>
           </trpc.Provider>
         </NotifierContextProvider>
