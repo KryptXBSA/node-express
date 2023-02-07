@@ -19,10 +19,10 @@ import { trpc } from "../utils/trpc";
 
 // const test = await client.getUser.query("hi");
 export default function Home() {
-
   const hello = trpc.getUser.useQuery("hi");
+  const create = trpc.createUser.useMutation({});
 
-  console.log(hello.data);
+  console.log(create.data);
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [fetchedLeaderboard, setFetchedLeaderboard] = useState(false);
   useEffect(() => {
@@ -30,6 +30,7 @@ export default function Home() {
       fetchLeaderboard();
       setFetchedLeaderboard(true);
     }
+    create.mutate({ name: "hisdasdasdsadasd" });
   }, []);
 
   async function fetchLeaderboard() {

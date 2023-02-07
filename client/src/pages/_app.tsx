@@ -10,6 +10,7 @@ import { httpBatchLink } from "@trpc/client";
 import React, { useState } from "react";
 import { trpc } from "../utils/trpc";
 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import superjson from "superjson";
 function MyApp({ Component, pageProps }: any) {
   const [queryClient] = useState(() => new QueryClient());
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }: any) {
         >
           <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
+              <ReactQueryDevtools initialIsOpen={false} />
               <Component {...pageProps} />
             </QueryClientProvider>
           </trpc.Provider>
