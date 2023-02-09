@@ -1,6 +1,7 @@
 import { appRouter } from "../router/router";
 import { generateOpenApiDocument } from "trpc-openapi";
 
+
 // Generate OpenAPI schema document
 export const openApiDocument = generateOpenApiDocument(appRouter, {
   title: "Example CRUD API",
