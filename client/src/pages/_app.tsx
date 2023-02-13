@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
           url: "http://localhost:7002/api/trpc",
           headers() {
             return {
-              // authorization: getAuth(),
+              // authorization: getAuthCookie(),
             };
           },
         }),

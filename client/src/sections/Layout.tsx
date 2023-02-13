@@ -189,7 +189,7 @@ function Login() {
       </div>
       {error && <div className="text-red-500">{error} </div>}
       <div className="flex items-start mb-6"></div>
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={async() => console.log("loginnnnnnnnnnnnnnnnnnnm,",await signIn("github",{redirect:false}))}>Sign in</button>
       <button onClick={() => signOut()}>Sign Out</button>
       <button
         type="submit"

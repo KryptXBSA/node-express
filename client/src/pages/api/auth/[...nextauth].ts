@@ -10,24 +10,33 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   // if (isDefaultSigninPage) providers.pop();
 
   console.log("Handling callback request from my Identity Provider", req.body);
-  console.log("mainbody",req.body);
+  console.log("mainbody", req.body);
+
+  // return res.send("hi")
   return await NextAuth(req, res, {
+    pages: {
+      signIn: "/",
+      error: "/",
+      newUser: "/",
+    },
     providers,
     callbacks: {
       async session({ session, token }) {
-        console.log("session callback??", session,"token", token);
+        console.log("session callback??", session, "token", token);
         // Return a cookie value as part of the session
         // This is read when `req.query.nextauth.includes("session") && req.method === "GET"`
         // session.someCookie = someCookie;
-        return {...session,lol:"aa"};
+        return { ...session, lol: "aa" };
       },
       async signIn(props) {
+        throw new Error("1");
         console.log("sign in from", props.credentials, props.account);
-        return false;
+        return true;
       },
     },
   });
 }
+
 function getProviders() {
   return [
     GithubProvider({
@@ -50,8 +59,9 @@ function getProviders() {
           placeholder: "jsmith",
         },
         password: { label: "Password", type: "password" },
+        paassword: { label: "Password", type: "password" },
       },
-      authorize: async (credentials: any, req) => {
+      authorize: async (credentials, req) => {
         console.log("body", req.body);
         console.log("header", req.headers);
         return { user: "aland" };
