@@ -1,5 +1,6 @@
 import { t } from "../trpc/trpc";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 export const userRouter = t.router({
   getUser: t.procedure.input(z.string()).query((req) => {
     req.input; // string
@@ -20,6 +21,11 @@ export const userRouter = t.router({
     })
     .mutation(async (req) => {
       // use your ORM of choice
+    throw new TRPCError({
+      message: "User not found",
+      code: "UNAUTHORIZED",
+      "cause":{a:"a"}
+    });
       return "hiii from mutation";
       // return await UserModel.create({
       //   data: req.input,

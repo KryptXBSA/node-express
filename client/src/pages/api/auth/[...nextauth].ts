@@ -29,7 +29,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         return { ...session, lol: "aa" };
       },
       async signIn(props) {
-        throw new Error("1");
         console.log("sign in from", props.credentials, props.account);
         return true;
       },
