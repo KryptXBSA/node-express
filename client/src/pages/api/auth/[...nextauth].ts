@@ -14,6 +14,17 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
   // return res.send("hi")
   return await NextAuth(req, res, {
+    cookies: {
+      sessionToken: {
+        name: `next-token`,
+        options: {
+          httpOnly: false,
+          sameSite: false,
+          path: "/",
+          secure: true,
+        },
+      },
+    },
     pages: {
       signIn: "/",
       error: "/",

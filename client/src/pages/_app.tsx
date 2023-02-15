@@ -11,6 +11,7 @@ import { httpBatchLink } from "@trpc/client";
 import React, { useState } from "react";
 import { trpc } from "../utils/trpc";
 
+import { getCookie, getCookies } from 'cookies-next';
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import superjson from "superjson";
 function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
@@ -23,7 +24,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
           url: "http://localhost:7002/api/trpc",
           headers() {
             return {
-              // authorization: getAuthCookie(),
+              authorization: getCookie("next-token"),
             };
           },
         }),

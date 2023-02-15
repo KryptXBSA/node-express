@@ -3,6 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Head from "next/head";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Sidebar } from "../components/sidebar";
+import Cookies from 'js-cookie'
 import {
   parseJwt,
   UseProgramContext,
@@ -13,6 +14,7 @@ import axios from "axios";
 import { setCookie, getCookie } from "cookies-next";
 
 import { SERVER_URL } from "../../config";
+import { trpc } from "../utils/trpc";
 const Layout = ({
   children,
   active,
@@ -22,6 +24,8 @@ const Layout = ({
   active?: number;
   page?: string;
 }) => {
+  const hello = trpc.user.getUser.useQuery("hi");
+    console.log("hiiiiiiii",hello)
   const session = useSession();
   console.log("Session  ", session);
   const { notify } = useNotifier();
@@ -71,6 +75,7 @@ const Layout = ({
 export default Layout;
 
 function SignUp() {
+
   const [error, setError] = useState("");
   let programContext = UseProgramContext();
   let usernameInputRef: any = useRef();
