@@ -33,7 +33,7 @@
   "typescript": "^4.4.3"
  },
  "scripts": {
-  "dev": "NODE_ENV=development ./node_modules/.bin/nodemon --exec './node_modules/.bin/ts-node' src/main.ts",
+  "dev": "NODE_ENV=development node './node_modules/.bin/ts-node' src/main.ts",
   "socket": "NODE_ENV=development node './node_modules/.bin/ts-node' socket/socket.ts",
   "cron": "NODE_ENV=development node './node_modules/.bin/ts-node' src/cron/cron.ts",
   "start": "npm run build && NODE_ENV=production node ./dist/src/main.js",
