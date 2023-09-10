@@ -1,6 +1,5 @@
 /** @format */
 
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { DispatchWithoutAction, useEffect, useState } from "react";
 
 import { ProgramContext, UseProgramContext } from "../../contexts/programContextProvider";
@@ -38,7 +37,6 @@ export const TipButton = ({
  postLikes,
  setShowTipModal,
 }: any) => {
- const wallet = useAnchorWallet();
  const [didLike, setDidLike] = useState(false);
 
  const [likedPost, setLikedPost] = useState(false);
@@ -55,9 +53,7 @@ export const TipButton = ({
  }
 
  useEffect(() => {
-  let wallet0 = wallet ? wallet.publicKey.toBase58() : localStorage.getItem("waallet");
-  checkPostLikes(wallet0, ["postLikes"]);
- }, [wallet]);
+ }, []);
  return (
   <>
    <div className="tooltip  bg-transparent items-center flex flex-row " data-tip="Tip">

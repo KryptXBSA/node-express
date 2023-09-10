@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 
   next();
 });
+
 const port = process.env.PORT || 7002
 app.use(express.json())
 app.use(router)

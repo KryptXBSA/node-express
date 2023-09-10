@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { PublicKey } from "@solana/web3.js";
 import moment from "moment";
 
 import axios from "axios";
@@ -54,9 +53,6 @@ export const Comment = ({ data }: Props) => {
   </div>
  );
 };
-interface NewCommentProps {
- postPubkey: PublicKey;
-}
 
 import { UseProgramContext } from "../../contexts/programContextProvider";
 import { useNotifier } from "react-headless-notifier";

@@ -6,9 +6,7 @@ import { NewPost } from "../components/new-post";
 import { Post } from "../components/post/post";
 import Layout from "../sections/Layout";
 import axios from "axios";
-
-import moment from "moment";
-import { ProgramContextInterface, UseProgramContext } from "../contexts/programContextProvider";
+import {  UseProgramContext } from "../contexts/programContextProvider";
 import { SERVER_URL } from "../../config";
 import { Waypoint } from "react-waypoint";
 

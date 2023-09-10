@@ -1,14 +1,9 @@
 /** @format */
-
-import Link from "next/link";
 import { useState } from "react";
 import { BookmarkButton, LikeButton, TipButton } from "./buttons";
 import { ShareButton, CommentButton } from "./buttons";
 import { Comment, NewComment } from "./comment";
-import * as anchor from "@project-serum/anchor";
 import moment from "moment";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { UseProgramContext } from "../../contexts/programContextProvider";
 import { useEffect } from "react";
 import { Post } from "../../types/post";
 import { IMAGE_SERVER_URL } from "../../../config";

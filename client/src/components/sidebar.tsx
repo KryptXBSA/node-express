@@ -64,6 +64,7 @@ export const Sidebar = ({ active }: { active: number | undefined }) => {
     <Button icon={homeIcon} index={0} active={active} href="/" text="Home" />
     <Button icon={profileIcon} index={1} active={active} href="/leaderboard" text="Leaderboard" />
     <Button icon={profileIcon} index={2} active={active} href="/captcha" text="Captcha" />
+    <Button icon={profileIcon} index={3} active={active} href="/settings" text="Settings" />
     {true && (
      <div className=" mb-8 ml-6 mt-auto">
       <div className="flex cursor-pointer items-center">
