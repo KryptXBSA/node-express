@@ -1,20 +1,20 @@
 import { User } from "./../src/types/user";
 import {
   SOCKET_PORT,
-  SOCKET_CLIENT_SERVER,
+  SOCKET_CLIENT,
   LEADERBOARD_COLLECTION,
   POINTS_PER_CAPTCHA,
 } from "./../config";
-import { createServer } from "http";
 import { Server } from "socket.io";
-import { Captchas, generateCaptcha } from "./captcha";
 import { updateOne } from "../src/mongo/mongo";
 import { verifyUser } from "../src/utils/verify-user";
 
+import { createServer } from "http";
+import { Captchas, generateCaptcha } from "./captcha";
 const httpServer = createServer();
 const io = new Server(httpServer, {
   cors: {
-    origin: SOCKET_CLIENT_SERVER,
+    origin: SOCKET_CLIENT,
     allowedHeaders: ["authorization"],
     credentials: true,
   },

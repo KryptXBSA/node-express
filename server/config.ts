@@ -2,8 +2,8 @@ let production = process.env.PRODUCTION;
 
 export const PORT = 7002;
 export const SOCKET_PORT = 7004;
-export const SOCKET_CLIENT_SERVER = production
-  ? ["https://node-express-socket.kurdmake.com"]
+export const SOCKET_CLIENT = production
+  ? ["https://node-express.kurdmake.com"]
   : ["http://localhost:7003"];
 export const JWT_SECRET = "secret";
 export const MONGO_CONNECTION_STRING =
